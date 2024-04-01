@@ -1,0 +1,133 @@
+@charset 'utf-8';
+
+body {
+    font-family: 'Nunito-sans', 'Arial', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.timer {
+    font-size: 18px;
+    font-weight: 600;
+    color: blue;
+}
+
+#left-div {
+    width: 300px;
+    height: 300px;
+    background-color: #7a53d4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* justify-content: space-around; */
+    gap: 10px;
+}
+
+#right-div {
+    width: 300px;
+    height: 500px;
+    background-color: rgb(55, 55, 197);
+    float: left;
+    margin-left: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#header-div {
+    width: 300px;
+    height: 100px;
+    background-color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    justify-content: space-around;
+}
+
+#center-div {
+    width: 300px;
+    height: 100px;
+    background-color: orange;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#bottom-div {
+    width: 300px;
+    height: 100px;
+    background-color: green;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+} 
+
+h1 {
+    color: #fff;
+    font-size: 24px;
+    text-align: center;
+    line-height: 50px;
+}
+
+button {
+    border: solid 1px;
+    border-color: #fff;
+    border-radius: 5px;
+    width: 60px;
+    height: 30px;
+}
+
+#timer {
+    color: #fff;
+}
+
+#score {
+    color: #fff;
+}
+
+#type-word {
+    width: 200px;
+    height: 50px;
+    background-color: aqua;
+    text-align: center;
+    line-height: 50px;
+}
+
+#input-word {
+    background-color: bisque;
+    width: 200px;
+    height: 50px;
+    text-align: center;
+}
+
+#game-over {
+    color: #fff;
+    text-align: center;
+}
+
+#final-points {
+    color: #fff;
+    text-align: center;
+    font-size: 18px;
+}
+
+#final-score {
+    color: #fff;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+#try-again-btn {
+    border-radius: 5px;
+    width: 100px;
+    height: 50px;
+    cursor: pointer;
+}
+
+#try-again-btn:hover {
+    color: #7a53d4;
+}
