@@ -1,12 +1,9 @@
 'use strict';
 
 import words from './words.js';
+import { Score } from './classes.js';
 
-let startScore = 0;
-let initialTimer = 'Timer';
-let initialWord = '';
-let initialInput = '';
-let initialScore = 'Score';
+let currentScore = new Score(new Date(), 0, 0);
 const gameDiv = document.createElement('div');
 const gamePara = document.createElement('p');
 const leftDiv = document.createElement('div');
@@ -24,6 +21,7 @@ const gameOverHead = document.createElement('h1');
 const finalPoints = document.createElement('div');
 const finalScore = document.createElement('div');
 const tryAgainBtn = document.createElement('button');
+const audioObject = document.getElementById("gameAudio");
 
 function show() {
     
@@ -79,8 +77,6 @@ function show() {
     initialState();
 }
 
-show();
-
 function setUpEndingPage() {
     
     gameOverHead.setAttribute('id', 'game-over');
@@ -113,17 +109,6 @@ function showScore(num) {
     appearScore.textContent = num;
 }
 
-function showTimer(num) {
-    let appearTimer = document.getElementById('timer');
-    appearTimer.textContent = num;
-}
-
-function showInput(str) {
-    let appearInput = document.getElementById('input-word');
-    appearInput.value = str;
-    console.log(str);
-}
-
 function generateRandomWords() {
     let randomIndex = Math.random() * 90;
     console.log(Math.round(randomIndex));
@@ -133,41 +118,34 @@ function generateRandomWords() {
 }
 
 function matchWord() {
-    let wordToMatch = document.getElementById('input-word').addEventListener('input', (event) => {
+    document.getElementById('input-word').addEventListener('input', (event) => {
         let valueOfInput = document.getElementById('input-word').value;
         let valueOfWord = document.getElementById('type-word').textContent;
 
         if (valueOfWord === valueOfInput) {
             showWord();  
             document.getElementById('input-word').value = '';
-            startScore = startScore + 1;
-            showScore(startScore);
-            finalScore.textContent = startScore;
-            return startScore;
+            currentScore.hits = currentScore.hits + 1;
+            showScore(currentScore.hits);
+            return currentScore.hits;
         }
     });
 }
 
-matchWord();
-
 function initialState() {
-    initialTimer = 'Timer';
-    initialWord = '';
-    initialInput = '';
-    initialScore = 'Score';
-    startScore = 0;
     document.getElementById('input-word').value = 'Press start and type here';
     document.getElementById('type-word').textContent = '';
     document.getElementById('timer').textContent = 'Timer';
     document.getElementById('score').textContent = 'Score';
     rightDiv.setAttribute('class', 'hidden');
-    leftDiv.setAttribute('class', 'show');   
+    leftDiv.setAttribute('class', 'show'); 
+    startButton.setAttribute('class', 'show');
 }
 
 function startInterval() {
     initialState();
     showWord();
-    showScore(startScore);
+    showScore(currentScore.hits);
     let totalTimer = 10;
     timer.textContent = totalTimer;
 
@@ -176,18 +154,31 @@ function startInterval() {
             timer.textContent = totalTimer;
 
             if (totalTimer <= 0) {
+                // Game Ends Here
                 clearInterval(timerID);
-                initialState();
-                rightDiv.setAttribute('class', 'show');
-                leftDiv.setAttribute('class', 'hidden');
+                endGame();
             }
         }, 1000);
     }
 
 function startGame() {
     document.getElementById('input-word').value = '';
+    startButton.setAttribute('class', 'hidden');
+    audioObject.play();
 }
 
-// TODO - when all words are done, stop the game.
+function endGame() {
+    stopAudio();
+    finalScore.textContent = currentScore.hits;
+    rightDiv.setAttribute('class', 'show');
+    leftDiv.setAttribute('class', 'hidden');
+    currentScore = new Score(new Date(), 0, 0);
+}
 
-// Create class
+function stopAudio() {
+    audioObject.pause();
+    audioObject.currentTime = 0;
+ }
+
+show();
+matchWord();
