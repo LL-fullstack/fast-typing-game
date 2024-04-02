@@ -37,7 +37,7 @@ function show() {
     rightDiv.setAttribute('id', 'right-div');
     document.body.appendChild(rightDiv);
 
-    gameHead.textContent = 'Super Typing Game';
+    gameHead.textContent = 'SpeedTyper';
     leftDiv.appendChild(gameHead);
 
     headerDiv.setAttribute('id', 'header-div');
