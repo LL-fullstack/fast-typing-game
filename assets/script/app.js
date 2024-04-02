@@ -62,7 +62,7 @@ function show() {
     headerDiv.appendChild(timer);
 
     score.setAttribute('id', 'score');
-    score.textContent = 'Score';
+    showScore('Score');
     headerDiv.appendChild(score);
 
     word.setAttribute('id', 'type-word');
@@ -105,9 +105,13 @@ function showWord() {
 }
 
 function showScore(num) {
-    let appearScore = document.getElementById('score');
-    appearScore.textContent = num;
+    score.innerHTML = `Score<br>${num}`;
 }
+
+function showTimer(num) {
+    timer.innerHTML = `Timer<br>${num}`;
+}
+
 
 function generateRandomWords() {
     let randomIndex = Math.random() * 90;
@@ -147,11 +151,11 @@ function startInterval() {
     showWord();
     showScore(currentScore.hits);
     let totalTimer = 10;
-    timer.textContent = totalTimer;
+    showTimer(totalTimer);
 
     const timerID = setInterval(function() {
             totalTimer = totalTimer - 1;
-            timer.textContent = totalTimer;
+            showTimer(totalTimer);
 
             if (totalTimer <= 0) {
                 // Game Ends Here
