@@ -131,3 +131,11 @@ button {
 #try-again-btn:hover {
     color: #7a53d4;
 }
+
+.show {
+    display: block;
+}
+
+.hidden {
+    visibility: hidden;
+}

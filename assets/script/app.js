@@ -76,6 +76,7 @@ function show() {
     bottomDiv.appendChild(inputWord);
 
     setUpEndingPage();
+    initialState();
 }
 
 show();
@@ -91,7 +92,7 @@ function setUpEndingPage() {
     rightDiv.appendChild(finalPoints);
 
     finalScore.setAttribute('id', 'final-score');
-    finalScore.textContent = '18';
+    finalScore.textContent = matchWord();
     rightDiv.appendChild(finalScore);
 
     tryAgainBtn.setAttribute('id', 'try-again-btn');
@@ -124,8 +125,10 @@ function showInput(str) {
 }
 
 function generateRandomWords() {
-    let randomIndex = Math.random() * 100;
+    let randomIndex = Math.random() * 90;
+    console.log(Math.round(randomIndex));
     let randomWord = words[Math.round(randomIndex)];
+    
     return randomWord;
 }
 
@@ -139,6 +142,8 @@ function matchWord() {
             document.getElementById('input-word').value = '';
             startScore = startScore + 1;
             showScore(startScore);
+            finalScore.textContent = startScore;
+            return startScore;
         }
     });
 }
@@ -152,23 +157,37 @@ function initialState() {
     initialScore = 'Score';
     startScore = 0;
     document.getElementById('input-word').value = 'Press start and type here';
+    document.getElementById('type-word').textContent = '';
+    document.getElementById('timer').textContent = 'Timer';
+    document.getElementById('score').textContent = 'Score';
+    rightDiv.setAttribute('class', 'hidden');
+    leftDiv.setAttribute('class', 'show');   
 }
 
 function startInterval() {
     initialState();
     showWord();
     showScore(startScore);
-    const timerID = setInterval(function() {
-        console.log("called");
-    }, 1000);
+    let totalTimer = 10;
+    timer.textContent = totalTimer;
 
-    setTimeout(function () {
-        clearInterval(timerID)
-        alert(startScore);
-        initialState();
-    },10000);
-}
+    const timerID = setInterval(function() {
+            totalTimer = totalTimer - 1;
+            timer.textContent = totalTimer;
+
+            if (totalTimer <= 0) {
+                clearInterval(timerID);
+                initialState();
+                rightDiv.setAttribute('class', 'show');
+                leftDiv.setAttribute('class', 'hidden');
+            }
+        }, 1000);
+    }
 
 function startGame() {
     document.getElementById('input-word').value = '';
 }
+
+// TODO - when all words are done, stop the game.
+
+// Create class
