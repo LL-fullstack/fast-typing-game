@@ -22,6 +22,8 @@ const finalPoints = document.createElement('div');
 const finalScore = document.createElement('div');
 const tryAgainBtn = document.createElement('button');
 const audioObject = document.getElementById("gameAudio");
+let wordList = [];
+let timerId;
 
 function show() {
     
@@ -53,7 +55,6 @@ function show() {
     startButton.textContent = 'Start';
     headerDiv.appendChild(startButton);
     startButton.addEventListener('click', function() {
-        startInterval();
         startGame();
     });
 
@@ -99,7 +100,7 @@ function setUpEndingPage() {
     });
 }
 
-function showWord() {
+function showWordOrExit() {
     let appearWord = document.getElementById('type-word');
     appearWord.textContent = generateRandomWords(); 
 }
@@ -112,11 +113,21 @@ function showTimer(num) {
     timer.innerHTML = `Timer<br>${num}`;
 }
 
+function checkWordListLength() {
+    if (wordList.length === 90) {
+        endGame();
+    }
+}
 
 function generateRandomWords() {
+    checkWordListLength();
     let randomIndex = Math.random() * 90;
     console.log(Math.round(randomIndex));
     let randomWord = words[Math.round(randomIndex)];
+
+    if (wordList.includes(randomWord) === false) {
+        wordList.push(randomWord);
+    }
     
     return randomWord;
 }
@@ -127,11 +138,10 @@ function matchWord() {
         let valueOfWord = document.getElementById('type-word').textContent;
 
         if (valueOfWord === valueOfInput) {
-            showWord();  
             document.getElementById('input-word').value = '';
             currentScore.hits = currentScore.hits + 1;
             showScore(currentScore.hits);
-            return currentScore.hits;
+            showWordOrExit();  
         }
     });
 }
@@ -144,39 +154,42 @@ function initialState() {
     rightDiv.setAttribute('class', 'hidden');
     leftDiv.setAttribute('class', 'show'); 
     startButton.setAttribute('class', 'appear');
+    wordList = [];
+    resetScore();
 }
 
 function startInterval() {
     initialState();
-    showWord();
+    showWordOrExit();
     showScore(currentScore.hits);
-    let totalTimer = 10;
+    let totalTimer = 99;
     showTimer(totalTimer);
 
-    const timerID = setInterval(function() {
+    timerId = setInterval(function() {
             totalTimer = totalTimer - 1;
             showTimer(totalTimer);
 
             if (totalTimer <= 0) {
                 // Game Ends Here
-                clearInterval(timerID);
                 endGame();
             }
         }, 1000);
     }
 
 function startGame() {
+    startInterval();
     document.getElementById('input-word').value = '';
     startButton.setAttribute('class', 'gone');
     audioObject.play();
 }
 
 function endGame() {
+    clearInterval(timerId);
     stopAudio();
     finalScore.textContent = currentScore.hits;
     rightDiv.setAttribute('class', 'show');
     leftDiv.setAttribute('class', 'hidden');
-    currentScore = new Score(new Date(), 0, 0);
+    resetScore();
 }
 
 function stopAudio() {
@@ -184,5 +197,12 @@ function stopAudio() {
     audioObject.currentTime = 0;
  }
 
+ function resetScore() {
+    currentScore = new Score(new Date(), 0, 0);
+ }
+
 show();
 matchWord();
+
+
+
