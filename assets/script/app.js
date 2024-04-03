@@ -143,7 +143,7 @@ function initialState() {
     document.getElementById('score').textContent = 'Score';
     rightDiv.setAttribute('class', 'hidden');
     leftDiv.setAttribute('class', 'show'); 
-    startButton.setAttribute('class', 'show');
+    startButton.setAttribute('class', 'appear');
 }
 
 function startInterval() {
@@ -167,7 +167,7 @@ function startInterval() {
 
 function startGame() {
     document.getElementById('input-word').value = '';
-    startButton.setAttribute('class', 'hidden');
+    startButton.setAttribute('class', 'gone');
     audioObject.play();
 }
 

@@ -5,43 +5,54 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(to bottom, #33ccff 0%, #ff99cc 100%);
+    margin: 0;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+    min-height: 100vh;
+}
+
+.video-bg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 100%;
+    min-height: 100%;
+    z-index: -1;
 }
 
 .timer {
     font-size: 18px;
     font-weight: 600;
-    color: blue;
 }
 
 #left-div {
     width: 300px;
-    height: 300px;
-    background-color: #7a53d4;
+    height: 400px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-evenly;
     gap: 10px;
+    position: fixed;
+    border-radius: 5px;
 }
 
 #right-div {
     width: 300px;
-    height: 500px;
-    background-color: rgb(55, 55, 197);
-    /* float: left;
-    margin-left: 400px; */
+    height: 400px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     gap: 20px;
+    border-radius: 5px;
 }
 
 #header-div {
     width: 300px;
     height: 100px;
-    background-color: black;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -51,7 +62,6 @@ body {
 #center-div {
     width: 300px;
     height: 100px;
-    background-color: orange;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -60,7 +70,6 @@ body {
 #bottom-div {
     width: 300px;
     height: 100px;
-    background-color: green;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -69,39 +78,58 @@ body {
 h1 {
     color: #fff;
     font-size: 24px;
+    font-weight: 600;
     text-align: center;
     line-height: 50px;
 }
 
-button {
+#start-button {
     border: solid 1px;
     border-color: #fff;
     border-radius: 5px;
     width: 60px;
     height: 30px;
+    cursor: pointer;
+}
+
+#start-button:hover {
+    background-color: #4d4c4c;
 }
 
 #timer {
     color: #fff;
+    text-align: center;
 }
 
 #score {
     color: #fff;
+    text-align: center;
 }
 
 #type-word {
     width: 200px;
     height: 50px;
-    background-color: aqua;
+    background-color: rgb(116, 114, 114);
+    opacity: 0.75;
     text-align: center;
     line-height: 50px;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 600;
 }
 
 #input-word {
-    background-color: bisque;
+    background-color: rgb(116, 114, 114);
+    opacity: 0.75;
     width: 200px;
     height: 50px;
     text-align: center;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 500;
+    padding: 20px;
 }
 
 #game-over {
@@ -127,10 +155,12 @@ button {
     width: 100px;
     height: 50px;
     cursor: pointer;
+    border: solid 1px;
+    border-color: #fff;
 }
 
 #try-again-btn:hover {
-    color: #7a53d4;
+    background-color: #4d4c4c;
 }
 
 .show {
@@ -139,4 +169,12 @@ button {
 
 .hidden {
     visibility: collapse;
+}
+
+.gone {
+    display: none;
+}
+
+.appear {
+    display: block;
 }
