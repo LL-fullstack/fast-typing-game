@@ -178,3 +178,8 @@ h1 {
 .appear {
     display: block;
 }
+
+#score-div {
+    background-color: aqua;
+    color: #fff;
+}
