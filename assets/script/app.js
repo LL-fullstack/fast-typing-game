@@ -220,11 +220,11 @@ function stopAudio() {
 
  function acceptNumber(jsonObject) {
     const hits = jsonObject.hits;
-    const percentage = jsonObject.percenatge;
+    const percentage = jsonObject.percentage;
     const date = jsonObject.date;
     const addNumberToDiv = document.createElement('div');
     addNumberToDiv.setAttribute('id', 'add-number-div');
-    addNumberToDiv.innerHTML = `${hits} ${percentage}% ${date}`;
+    addNumberToDiv.innerHTML = `${hits}     ${percentage}%    ${date}`;
     scoreListDiv.appendChild(addNumberToDiv);
  }
 
