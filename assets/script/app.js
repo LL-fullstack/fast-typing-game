@@ -1,9 +1,9 @@
 'use strict';
 
 import words from './words.js';
-import { Score } from './classes.js';
+import { Score } from './Score.js';
 
-let currentScore = new Score(new Date(), 0, 0);
+let hits;
 const gameDiv = document.createElement('div');
 const gamePara = document.createElement('p');
 const leftDiv = document.createElement('div');
@@ -22,8 +22,12 @@ const finalPoints = document.createElement('div');
 const finalScore = document.createElement('div');
 const tryAgainBtn = document.createElement('button');
 const audioObject = document.getElementById("gameAudio");
+const resetBtn = document.getElementById("reset-btn");
+
 let wordList = [];
 let timerId;
+const showScoreList = document.createElement('div');
+const scoreListDiv = document.createElement('div');
 
 function show() {
     
@@ -73,6 +77,16 @@ function show() {
     inputWord.setAttribute('type', 'text');
     inputWord.setAttribute('id', 'input-word');
     bottomDiv.appendChild(inputWord);
+
+    showScoreList.setAttribute('id', 'show-score-list');
+    rightDiv.appendChild(showScoreList);
+
+    scoreListDiv.setAttribute('id', 'score-div');
+    document.body.appendChild(scoreListDiv);
+
+    resetBtn.addEventListener('click', function() {
+        reset();
+    });
 
     setUpEndingPage();
     initialState();
@@ -139,14 +153,15 @@ function matchWord() {
 
         if (valueOfWord === valueOfInput) {
             document.getElementById('input-word').value = '';
-            currentScore.hits = currentScore.hits + 1;
-            showScore(currentScore.hits);
+            hits = hits + 1;
+            showScore(hits);
             showWordOrExit();  
         }
     });
 }
 
 function initialState() {
+    hideScoreListDiv();
     document.getElementById('input-word').value = 'Press start and type here';
     document.getElementById('type-word').textContent = '';
     document.getElementById('timer').textContent = 'Timer';
@@ -161,8 +176,8 @@ function initialState() {
 function startInterval() {
     initialState();
     showWordOrExit();
-    showScore(currentScore.hits);
-    let totalTimer = 99;
+    showScore(hits);
+    let totalTimer = 15;
     showTimer(totalTimer);
 
     timerId = setInterval(function() {
@@ -186,9 +201,11 @@ function startGame() {
 function endGame() {
     clearInterval(timerId);
     stopAudio();
-    finalScore.textContent = currentScore.hits;
+    finalScore.textContent = hits;
     rightDiv.setAttribute('class', 'show');
     leftDiv.setAttribute('class', 'hidden');
+    const scoresList = addScoreToList(hits);
+    createScoreList(scoresList);
     resetScore();
 }
 
@@ -198,11 +215,104 @@ function stopAudio() {
  }
 
  function resetScore() {
-    currentScore = new Score(new Date(), 0, 0);
+    hits = 0;
  }
+
+ function acceptNumber(jsonObject) {
+    const hits = jsonObject.hits;
+    const percentage = jsonObject.percenatge;
+    const date = jsonObject.date;
+    const addNumberToDiv = document.createElement('div');
+    addNumberToDiv.setAttribute('id', 'add-number-div');
+    addNumberToDiv.innerHTML = `${hits} ${percentage}% ${date}`;
+    scoreListDiv.appendChild(addNumberToDiv);
+ }
+
+ function addScoreToList(num) {
+    const percentage = num * 100 / 90;
+    const integerPercentage = Math.floor(percentage);
+    const date = new Date();
+    const dateString = formatDate(date);
+    const listOfScores = addScoreToLocalStorage(num, integerPercentage, dateString);
+    return listOfScores;
+ }
+
+ function formatDate(date) {
+    // Get day, month, and year from the Date object
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Month is zero-based
+    const year = date.getFullYear();
+
+    // Construct the formatted date string in "DD-MM-YYYY" format
+    return `${day}-${month}-${year}`;
+}
+
+ function sortScoreList(jsonList) {
+    let sortedScoreList = jsonList.sort((a, b) => b.hits - a.hits);
+    let topNineScores = sortedScoreList.slice(0, 9);
+    return topNineScores;
+ }
+
+ function createScoreList(jsonlist) {
+    console.log(
+        jsonlist
+    );
+    scoreListDiv.innerHTML = '';
+    for (let i = 0; i < jsonlist.length; i++) {
+        acceptNumber(jsonlist[i]);
+    }
+    showScoreListDiv();
+ }
+
+ function showScoreListDiv() {
+    scoreListDiv.setAttribute('class', 'appear');
+ }
+
+ function hideScoreListDiv() {
+    scoreListDiv.setAttribute('class', 'gone');
+ }
+
+ function createJSONString(hits, percentage, date) {
+    const jsonScore =  JSON.stringify( { "hits" : hits, "percentage": percentage, "date": date } );
+    return jsonScore;
+ }
+``
+ function getItemLocalStorage() {
+    const stored = localStorage.getItem('scores');
+    return stored;
+ }
+
+ function saveItemLocalStorage(jsonObject) {
+    localStorage.setItem('scores', jsonObject);
+ }
+
+ function addScoreToLocalStorage(hits, percentage, date) {
+    const scoreJsonString = createJSONString(hits, percentage, date);
+    let localStorageJson = getItemLocalStorage();
+    if(localStorageJson === null) {
+        localStorageJson = JSON.stringify( [] );
+    }
+    const scoreJsonObject = JSON.parse(scoreJsonString);
+    const storedJsonObject = JSON.parse(localStorageJson);
+    storedJsonObject.push(scoreJsonObject);
+    const sortedJsonObject = sortScoreList(storedJsonObject);
+    const localStorageJsonString = JSON.stringify(sortedJsonObject);
+    saveItemLocalStorage(localStorageJsonString);
+    const saved = getItemLocalStorage();
+    console.log(
+        saved
+    );
+    return sortedJsonObject;
+ }
+
+function reset() {
+    clearInterval(timerId);
+    stopAudio();
+    resetScore();
+    initialState();
+}
 
 show();
 matchWord();
-
 
 
