@@ -162,6 +162,7 @@ function matchWord() {
 
 function initialState() {
     hideScoreListDiv();
+    hideResetBtn();
     document.getElementById('input-word').value = 'Press start and type here';
     document.getElementById('type-word').textContent = '';
     document.getElementById('timer').textContent = 'Timer';
@@ -193,6 +194,7 @@ function startInterval() {
 
 function startGame() {
     startInterval();
+    showResetBtn();
     document.getElementById('input-word').value = '';
     startButton.setAttribute('class', 'gone');
     audioObject.play();
@@ -201,6 +203,7 @@ function startGame() {
 function endGame() {
     clearInterval(timerId);
     stopAudio();
+    hideResetBtn();
     finalScore.textContent = hits;
     rightDiv.setAttribute('class', 'show');
     leftDiv.setAttribute('class', 'hidden');
@@ -310,6 +313,14 @@ function reset() {
     stopAudio();
     resetScore();
     initialState();
+}
+
+function showResetBtn() {
+    resetBtn.setAttribute('class', 'appear');
+}
+
+function hideResetBtn() {
+    resetBtn.setAttribute('class', 'gone');
 }
 
 show();
